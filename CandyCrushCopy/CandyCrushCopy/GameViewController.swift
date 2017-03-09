@@ -11,6 +11,20 @@ import SpriteKit
 
 class GameViewController: UIViewController {
     var scene: GameScene!
+    var level:Level!
+    
+    func beginGame(){
+        shuffle()
+    }
+    
+    
+    //call Level’s shuffle() method, which returns the Set containing new Candy objects
+    //Remember that these cookie objects are just model data; they don’t have any sprites yet.
+    func shuffle(){
+        let newCandies = level.shuffle()
+        scene.addSprites(for: newCandies)
+    }
+    
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -31,11 +45,19 @@ class GameViewController: UIViewController {
         let skView = view as! SKView
         skView.isMultipleTouchEnabled = false
         
+        // creating the actual Level instance
+        level = Level()
+        
+        
         // Create and configure the scene.
         scene = GameScene(size: skView.bounds.size)
         scene.scaleMode = .aspectFill
-        
+        //cannot put over, the scene havn't a instance 
+        scene.level = level
         // Present the scene.
         skView.presentScene(scene)
+        
+        //remember to begin game
+        beginGame()
     }
 }

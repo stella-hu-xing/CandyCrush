@@ -12,7 +12,8 @@ import GameplayKit
 class GameScene: SKScene {
     
     //The scene has a public property to hold a reference to the current level
-    var level: Level
+    //(adding! could avoid the initialization)
+    var level: Level!
     
     let TileWidth: CGFloat = 32.0
     let TileHeight: CGFloat = 36.0
@@ -45,6 +46,22 @@ class GameScene: SKScene {
         gameLayer.addChild(CandyLyer)
     }
     
+    //addSprites(for:) iterates through the set of cookies and adds a corresponding SKSpriteNode instance to the cookie layer. This uses a helper method, pointFor(column:, row:), that converts a column and row number into a CGPoint that is relative to the cookiesLayer. This point represents the center of the cookie’s SKSpriteNode.
+    func addSprites(for candies: Set<Candy>) {
+        for candy in candies {
+            let sprite = SKSpriteNode(imageNamed: candy.candyType.spriteName)
+            sprite.size = CGSize(width: TileWidth, height: TileHeight)
+            sprite.position = pointFor(column: candy.column, row: candy.row)
+            CandyLyer.addChild(sprite)
+            candy.sprite = sprite
+        }
+    }
+    
+    func pointFor(column: Int, row: Int) -> CGPoint {
+        return CGPoint(
+            x: CGFloat(column)*TileWidth + TileWidth/2,
+            y: CGFloat(row)*TileHeight + TileHeight/2)
+    }
     
 //    
 //    private var label : SKLabelNode?
