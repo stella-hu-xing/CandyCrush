@@ -18,6 +18,11 @@ class GameScene: SKScene {
     let TileWidth: CGFloat = 32.0
     let TileHeight: CGFloat = 36.0
     
+    //These properties record the column and row numbers of the cookie that the player first touched when she started her swipe movement.
+    //why Int? instead of Int? because they need to be nil when the player is not swiping.
+    private var swipeFromColumn: Int?
+    private var swipeFromRow: Int?
+    
     //To keep the Sprite Kit node hierarchy neatly organized, GameScene uses several layers. The base layer is called gameLayer. This is the container for all the other layers and it’s centered on the screen
     let gameLayer = SKNode()
     
@@ -48,6 +53,9 @@ class GameScene: SKScene {
         gameLayer.addChild(tilesLayer)
         CandyLyer.position = layerPosition
         gameLayer.addChild(CandyLyer)
+        
+        swipeFromColumn = nil
+        swipeFromRow = nil
     }
     
     //addSprites(for:) iterates through the set of cookies and adds a corresponding SKSpriteNode instance to the cookie layer. This uses a helper method, pointFor(column:, row:), that converts a column and row number into a CGPoint that is relative to the cookiesLayer. This point represents the center of the cookie’s SKSpriteNode.
