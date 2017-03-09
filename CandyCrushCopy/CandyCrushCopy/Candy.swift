@@ -11,13 +11,13 @@ import SpriteKit
 //put Candy as a model object that simple describes the data for the cookie. It is seperated from View and Controller.
 
 enum CandyType:Int {
-    case unknown = 0,cupcake, crossant,danish,donut,macaroon,sugarCookie
+    case unknown = 0,cupcake, croissant,danish,donut,macaroon,sugarCookie
     
     //The spriteName property returns the filename of the corresponding sprite image in the texture atlas.
     //The spriteName and highlightedSpriteName properties simply look up the name for the cookie sprite in an array of strings.
     
     var spriteName:String{
-        let spriteName = ["Cupcake","Crossant","Danish",
+        let spriteName = ["Cupcake","Croissant","Danish",
                         "Donut","Macaroon","SugarCookie"]
         
         return spriteName[rawValue - 1]//rawValue to convert the enum’s current value to an integer

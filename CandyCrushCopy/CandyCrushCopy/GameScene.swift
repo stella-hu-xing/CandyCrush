@@ -23,6 +23,7 @@ class GameScene: SKScene {
     
     //a child of gameLayer
     let CandyLyer = SKNode()
+    let tilesLayer = SKNode()
     
     required init?(coder aDecoder:NSCoder){
         fatalError("init(coder) is not used")
@@ -42,6 +43,9 @@ class GameScene: SKScene {
         let layerPosition = CGPoint(x: -TileWidth*CGFloat(NumColumns)/2,
                                     y: -TileHeight*CGFloat(NumRows)/2)
         
+        //the tiles need to be done first so the tiles appear behind the cookies (Sprite Kit nodes with the same zPosition are drawn in order of how they were added).
+        tilesLayer.position = layerPosition
+        gameLayer.addChild(tilesLayer)
         CandyLyer.position = layerPosition
         gameLayer.addChild(CandyLyer)
     }
@@ -61,6 +65,19 @@ class GameScene: SKScene {
         return CGPoint(
             x: CGFloat(column)*TileWidth + TileWidth/2,
             y: CGFloat(row)*TileHeight + TileHeight/2)
+    }
+    
+    func addTiles() {
+        for row in 0..<NumRows {
+            for column in 0..<NumColumns {
+                if level.tileAt(column: column, row: row) != nil {
+                    let tileNode = SKSpriteNode(imageNamed: "Tile")
+                    tileNode.size = CGSize(width: TileWidth, height: TileHeight)
+                    tileNode.position = pointFor(column: column, row: row)
+                    tilesLayer.addChild(tileNode)
+                }
+            }
+        }
     }
     
 //    

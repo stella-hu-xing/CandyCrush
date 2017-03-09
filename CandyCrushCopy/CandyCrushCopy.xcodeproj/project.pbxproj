@@ -19,6 +19,13 @@
 		792382A01E6FE024001AEA77 /* Candy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7923829F1E6FE024001AEA77 /* Candy.swift */; };
 		792382A21E6FF0C1001AEA77 /* Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792382A11E6FF0C1001AEA77 /* Array2D.swift */; };
 		792382A41E6FF506001AEA77 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792382A31E6FF506001AEA77 /* Level.swift */; };
+		79FC4B5E1E71032A000879B8 /* Level_0.json in Resources */ = {isa = PBXBuildFile; fileRef = 79FC4B591E71032A000879B8 /* Level_0.json */; };
+		79FC4B5F1E71032A000879B8 /* Level_1.json in Resources */ = {isa = PBXBuildFile; fileRef = 79FC4B5A1E71032A000879B8 /* Level_1.json */; };
+		79FC4B601E71032A000879B8 /* Level_2.json in Resources */ = {isa = PBXBuildFile; fileRef = 79FC4B5B1E71032A000879B8 /* Level_2.json */; };
+		79FC4B611E71032A000879B8 /* Level_3.json in Resources */ = {isa = PBXBuildFile; fileRef = 79FC4B5C1E71032A000879B8 /* Level_3.json */; };
+		79FC4B621E71032A000879B8 /* Level_4.json in Resources */ = {isa = PBXBuildFile; fileRef = 79FC4B5D1E71032A000879B8 /* Level_4.json */; };
+		79FC4B641E710375000879B8 /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FC4B631E710375000879B8 /* Tile.swift */; };
+		79FC4B661E710489000879B8 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FC4B651E710489000879B8 /* Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +64,13 @@
 		7923829F1E6FE024001AEA77 /* Candy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Candy.swift; sourceTree = "<group>"; };
 		792382A11E6FF0C1001AEA77 /* Array2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array2D.swift; sourceTree = "<group>"; };
 		792382A31E6FF506001AEA77 /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
+		79FC4B591E71032A000879B8 /* Level_0.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Level_0.json; sourceTree = "<group>"; };
+		79FC4B5A1E71032A000879B8 /* Level_1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Level_1.json; sourceTree = "<group>"; };
+		79FC4B5B1E71032A000879B8 /* Level_2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Level_2.json; sourceTree = "<group>"; };
+		79FC4B5C1E71032A000879B8 /* Level_3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Level_3.json; sourceTree = "<group>"; };
+		79FC4B5D1E71032A000879B8 /* Level_4.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Level_4.json; sourceTree = "<group>"; };
+		79FC4B631E710375000879B8 /* Tile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
+		79FC4B651E710489000879B8 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +121,7 @@
 		792382681E6FCEED001AEA77 /* CandyCrushCopy */ = {
 			isa = PBXGroup;
 			children = (
+				79FC4B581E71032A000879B8 /* Levels */,
 				7923829D1E6FD456001AEA77 /* Sprites.atlas */,
 				792382691E6FCEED001AEA77 /* AppDelegate.swift */,
 				7923826F1E6FCEED001AEA77 /* GameScene.swift */,
@@ -118,6 +133,8 @@
 				7923829F1E6FE024001AEA77 /* Candy.swift */,
 				792382A11E6FF0C1001AEA77 /* Array2D.swift */,
 				792382A31E6FF506001AEA77 /* Level.swift */,
+				79FC4B631E710375000879B8 /* Tile.swift */,
+				79FC4B651E710489000879B8 /* Extension.swift */,
 			);
 			path = CandyCrushCopy;
 			sourceTree = "<group>";
@@ -138,6 +155,18 @@
 				792382911E6FCEED001AEA77 /* Info.plist */,
 			);
 			path = CandyCrushCopyUITests;
+			sourceTree = "<group>";
+		};
+		79FC4B581E71032A000879B8 /* Levels */ = {
+			isa = PBXGroup;
+			children = (
+				79FC4B591E71032A000879B8 /* Level_0.json */,
+				79FC4B5A1E71032A000879B8 /* Level_1.json */,
+				79FC4B5B1E71032A000879B8 /* Level_2.json */,
+				79FC4B5C1E71032A000879B8 /* Level_3.json */,
+				79FC4B5D1E71032A000879B8 /* Level_4.json */,
+			);
+			path = Levels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -249,8 +278,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				7923829E1E6FD456001AEA77 /* Sprites.atlas in Resources */,
+				79FC4B621E71032A000879B8 /* Level_4.json in Resources */,
+				79FC4B601E71032A000879B8 /* Level_2.json in Resources */,
+				79FC4B5E1E71032A000879B8 /* Level_0.json in Resources */,
 				792382751E6FCEED001AEA77 /* Main.storyboard in Resources */,
 				792382771E6FCEED001AEA77 /* Assets.xcassets in Resources */,
+				79FC4B5F1E71032A000879B8 /* Level_1.json in Resources */,
+				79FC4B611E71032A000879B8 /* Level_3.json in Resources */,
 				7923827A1E6FCEED001AEA77 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -279,9 +313,11 @@
 				792382A41E6FF506001AEA77 /* Level.swift in Sources */,
 				792382701E6FCEED001AEA77 /* GameScene.swift in Sources */,
 				792382A01E6FE024001AEA77 /* Candy.swift in Sources */,
+				79FC4B641E710375000879B8 /* Tile.swift in Sources */,
 				792382721E6FCEED001AEA77 /* GameViewController.swift in Sources */,
 				7923826A1E6FCEED001AEA77 /* AppDelegate.swift in Sources */,
 				792382A21E6FF0C1001AEA77 /* Array2D.swift in Sources */,
+				79FC4B661E710489000879B8 /* Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,6 +562,7 @@
 				792382961E6FCEED001AEA77 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		792382971E6FCEED001AEA77 /* Build configuration list for PBXNativeTarget "CandyCrushCopyTests" */ = {
 			isa = XCConfigurationList;
@@ -534,6 +571,7 @@
 				792382991E6FCEED001AEA77 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7923829A1E6FCEED001AEA77 /* Build configuration list for PBXNativeTarget "CandyCrushCopyUITests" */ = {
 			isa = XCConfigurationList;
@@ -542,6 +580,7 @@
 				7923829C1E6FCEED001AEA77 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -46,7 +46,7 @@ class GameViewController: UIViewController {
         skView.isMultipleTouchEnabled = false
         
         // creating the actual Level instance
-        level = Level()
+        level = Level(filename: "Level_1")
         
         
         // Create and configure the scene.
@@ -54,6 +54,8 @@ class GameViewController: UIViewController {
         scene.scaleMode = .aspectFill
         //cannot put over, the scene havn't a instance 
         scene.level = level
+        scene.addTiles()
+        
         // Present the scene.
         skView.presentScene(scene)
         
