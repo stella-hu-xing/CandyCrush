@@ -45,7 +45,15 @@ class Level{
         for r in 0..<NumColumns{
             for c in 0..<NumRows{
                 if tiles[c,r] != nil {
-                let ctype = CandyType.random()
+                    
+               // let ctype = CandyType.random()
+               //replace the random candy to make sure that it never creates a chain of three or more
+                    //If the new random number causes a chain of three (because there are already two cookies of this type to the left or below) then the method tries again (how to make sure)
+                    var ctype: CandyType
+                    repeat{
+                        ctype = CandyType.random()
+                    }while(c >= 2 && candies[c-1,r]?.candyType == ctype && candies[c-2,r]?.candyType == ctype) ||
+                           (r >= 2 && candies[c,r-1]?.candyType == ctype && candies[c,r-2]?.candyType == ctype)
                 
                 let candy = Candy(column: c, row: r, candyType: ctype)
                 candies[c,r] = candy
