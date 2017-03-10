@@ -5,7 +5,7 @@
 ![screen-shoot](CandyCrushCopy/Screen Shot1.jpg)
 
 ##About Author
- - All copyright belongs to M
+ - All copyright belongs to Morten Faarkrog from [Ray Wenderlich tutorial](https://www.raywenderlich.com/)
  - All resources are from Ray Wenderlich tutorials
   
   * [part 1](https://www.raywenderlich.com/125311/make-game-like-candy-crush-spritekit-swift-part-1) 
