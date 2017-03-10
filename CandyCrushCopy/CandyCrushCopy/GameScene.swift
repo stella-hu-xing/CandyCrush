@@ -27,7 +27,7 @@ class GameScene: SKScene {
     let gameLayer = SKNode()
     
     //a child of gameLayer
-    let CandyLyer = SKNode()
+    let CandyLayer = SKNode()
     let tilesLayer = SKNode()
     
     required init?(coder aDecoder:NSCoder){
@@ -51,8 +51,8 @@ class GameScene: SKScene {
         //the tiles need to be done first so the tiles appear behind the cookies (Sprite Kit nodes with the same zPosition are drawn in order of how they were added).
         tilesLayer.position = layerPosition
         gameLayer.addChild(tilesLayer)
-        CandyLyer.position = layerPosition
-        gameLayer.addChild(CandyLyer)
+        CandyLayer.position = layerPosition
+        gameLayer.addChild(CandyLayer)
         
         swipeFromColumn = nil
         swipeFromRow = nil
@@ -64,7 +64,7 @@ class GameScene: SKScene {
             let sprite = SKSpriteNode(imageNamed: candy.candyType.spriteName)
             sprite.size = CGSize(width: TileWidth, height: TileHeight)
             sprite.position = pointFor(column: candy.column, row: candy.row)
-            CandyLyer.addChild(sprite)
+            CandyLayer.addChild(sprite)
             candy.sprite = sprite
         }
     }
@@ -73,6 +73,16 @@ class GameScene: SKScene {
         return CGPoint(
             x: CGFloat(column)*TileWidth + TileWidth/2,
             y: CGFloat(row)*TileHeight + TileHeight/2)
+    }
+    
+    //This method takes a CGPoint that is relative to the cookiesLayer and converts it into column and row numbers.
+    func convertPoint(point:CGPoint) -> (success: Bool, column:Int, row:Int){
+        if (point.x >= 0 && point.x < CGFloat(NumColumns)*TileWidth ) &&
+            (point.y >= 0 && point.y < CGFloat(NumRows)*TileHeight){
+            return (true,Int(point.x/TileWidth),Int(point.y/TileHeight))
+        }else{
+            return (false,0,0)  //invalid location
+        }
     }
     
     func addTiles() {
@@ -87,81 +97,85 @@ class GameScene: SKScene {
             }
         }
     }
+    //The game will call touchesBegan() whenever the user puts her finger on the screen. Here’s what the method does, step by step:
+    //1, It converts the touch location, if any, to a point relative to the cookiesLayer.
+    //2.Then, it finds out if the touch is inside a square on the level grid by calling a method you’ll write in a moment. If so, then this might be the start of a swipe motion. At this point, you don’t know yet whether that square contains a cookie, but at least the player put her finger somewhere inside the 9×9 grid.
+    //3,Next, the method verifies that the touch is on a cookie rather than on an empty square.
+    //4.Finally, it records the column and row where the swipe started so you can compare them later to find the direction of the swipe.
+        override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+            guard let touch = touches.first else {return }
+            let location = touch.location(in: CandyLayer)
+            let (success,column,row) = convertPoint(point: location)
+            
+            if success {
+                if level.candyAt(column:column,row:row) != nil{
+                    swipeFromRow = row
+                    swipeFromColumn = column
+                }
+            }
+            
+        }
     
-//    
-//    private var label : SKLabelNode?
-//    private var spinnyNode : SKShapeNode?
-//    
-//    override func didMove(to view: SKView) {
-//        
-//        // Get label node from scene and store it for use later
-//        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-//        if let label = self.label {
-//            label.alpha = 0.0
-//            label.run(SKAction.fadeIn(withDuration: 2.0))
-//        }
-//        
-//        // Create shape node to use during mouse interaction
-//        let w = (self.size.width + self.size.height) * 0.05
-//        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
-//        
-//        if let spinnyNode = self.spinnyNode {
-//            spinnyNode.lineWidth = 2.5
-//            
-//            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(M_PI), duration: 1)))
-//            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-//                                              SKAction.fadeOut(withDuration: 0.5),
-//                                              SKAction.removeFromParent()]))
-//        }
-//    }
-//    
-//    
-//    func touchDown(atPoint pos : CGPoint) {
-//        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-//            n.position = pos
-//            n.strokeColor = SKColor.green
-//            self.addChild(n)
-//        }
-//    }
-//    
-//    func touchMoved(toPoint pos : CGPoint) {
-//        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-//            n.position = pos
-//            n.strokeColor = SKColor.blue
-//            self.addChild(n)
-//        }
-//    }
-//    
-//    func touchUp(atPoint pos : CGPoint) {
-//        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-//            n.position = pos
-//            n.strokeColor = SKColor.red
-//            self.addChild(n)
-//        }
-//    }
-//    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        if let label = self.label {
-//            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-//        }
-//        
-//        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
-//    }
-//    
-//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
-//    }
-//    
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-//    }
-//    
-//    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-//    }
-//    
-//    
-//    override func update(_ currentTime: TimeInterval) {
-//        // Called before each frame is rendered
-//    }
-}
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard swipeFromColumn != nil else {
+            return
+        }
+        
+        guard let touch = touches.first else {
+            return
+        }
+        
+        let location = touch.location(in: CandyLayer)
+        let (success,column,row) = convertPoint(point: location)
+        
+        if success{
+            var horzDelta = 0, vertiDelta=0
+            if column < swipeFromColumn! {
+                horzDelta = -1
+            }else if column > swipeFromColumn! {
+                horzDelta = 1
+            }else if row < swipeFromRow! {
+                vertiDelta = -1
+            }else if row > swipeFromRow!{
+                vertiDelta = 1
+            }
+            
+            if horzDelta != 0 && vertiDelta != 0 {
+                trySwap(horizental: horzDelta, vertical: vertiDelta)
+                
+                 swipeFromColumn = nil
+            }
+            
+           
+        }
+    }
+    
+    
+    func trySwap(horizental horzDelta:Int, vertical vertiDelta:Int){ // horizental is the name of para,!!!!this part is important
+        let toColumn = swipeFromColumn! + horzDelta
+        let toRow = swipeFromRow! + vertiDelta
+        
+        guard toColumn >= 0 && toColumn < NumColumns else {return}
+        guard toRow >= 0 && toRow < NumRows else {
+            return
+        }
+        
+        if let toCandy = level.candyAt(column: toColumn, row: toRow),
+            let fromCandy = level.candyAt(column: swipeFromColumn!, row: swipeFromRow!){
+            print("get a swap: from \(fromCandy) to \(toCandy)")
+        }
+        
+    }
+    
+    //be called when the user lifts her finger from the screen
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        swipeFromRow = nil
+        swipeFromColumn = nil
+    }
+    
+    //happens when iOS decides that it must interrupt the touch (for example, because of an incoming phone call).
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        touchesEnded(touches, with: event)
+    }
+    
+ }
