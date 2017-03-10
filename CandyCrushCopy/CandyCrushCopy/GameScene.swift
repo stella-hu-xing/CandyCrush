@@ -25,6 +25,10 @@ class GameScene: SKScene {
     private var swipeFromColumn: Int?
     private var swipeFromRow: Int?
     
+    //for highlight the selected candy
+    var selectedSprite = SKSpriteNode()
+    
+    
     //To keep the Sprite Kit node hierarchy neatly organized, GameScene uses several layers. The base layer is called gameLayer. This is the container for all the other layers and it’s centered on the screen
     let gameLayer = SKNode()
     
@@ -115,6 +119,8 @@ class GameScene: SKScene {
                 if let candy = level.candyAt(column: column, row: row) {
                     swipeFromRow = row
                     swipeFromColumn = column
+                    
+                    showSelectionIndicatorForCandy(candy: candy)
                 }
             }
             
@@ -147,6 +153,7 @@ class GameScene: SKScene {
             if horzDelta != 0 || vertiDelta != 0 {
                 trySwap(horizental: horzDelta, vertical: vertiDelta)
                 
+                hideSelectedIndicator()
                  swipeFromColumn = nil
             }
             
@@ -178,6 +185,12 @@ class GameScene: SKScene {
     
     //be called when the user lifts her finger from the screen
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        //If the user just taps on the screen rather than swipes, you want to fade out the highlighted sprite, too
+        if(selectedSprite.parent != nil && swipeFromColumn != nil){
+            hideSelectedIndicator()
+        }
+        
         swipeFromRow = nil
         swipeFromColumn = nil
     }
@@ -209,6 +222,27 @@ class GameScene: SKScene {
         
     }
     
+    // show the highlight
+    func showSelectionIndicatorForCandy(candy: Candy){
+        if selectedSprite.parent != nil {
+            selectedSprite.removeFromParent()
+        }
+        
+        if let sprite = candy.sprite{
+            
+            let texture = SKTexture(imageNamed: candy.candyType.highlightedSpriteName)
+            selectedSprite.size = CGSize(width: TileWidth, height: TileHeight)
+            selectedSprite.run(SKAction.setTexture(texture))
+            
+            sprite.addChild(selectedSprite)
+            selectedSprite.alpha = 1.0
+        }
+    }
+    
+    //This method removes the selection sprite by fading it out.
+    func hideSelectedIndicator(){
+        selectedSprite.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.3),SKAction.removeFromParent()]))
+    }
     
  }
 
