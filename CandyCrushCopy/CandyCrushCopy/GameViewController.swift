@@ -55,6 +55,7 @@ class GameViewController: UIViewController {
         //cannot put over, the scene havn't a instance 
         scene.level = level
         scene.addTiles()
+        scene.swipeHandler = handleSwipe
         
         // Present the scene.
         skView.presentScene(scene)
@@ -62,4 +63,20 @@ class GameViewController: UIViewController {
         //remember to begin game
         beginGame()
     }
+    
+    func handleSwipe(swap:Swap){
+        
+      view.isUserInteractionEnabled = false
+    
+      level.performSwap(swap: swap)
+        
+      scene.animate(swap){
+            self.view.isUserInteractionEnabled = true
+        }
+    }
+    
+    
+    
+    
+    
 }

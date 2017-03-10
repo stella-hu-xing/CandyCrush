@@ -75,4 +75,20 @@ class Level{
         }
     }
     
+    func performSwap(swap:Swap){
+        
+        let columnA = swap.candyA.column
+        let rowA = swap.candyA.row
+        let columnB = swap.candyB.column
+        let rowB = swap.candyB.row
+        
+        candies[columnA,rowA] = swap.candyB
+        swap.candyB.column = columnA
+        swap.candyB.row = rowA
+        
+        candies[columnB,rowB] = swap.candyA
+        swap.candyA.column = columnB
+        swap.candyA.row = rowB
+    }
+    
 }

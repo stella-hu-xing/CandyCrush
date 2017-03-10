@@ -15,6 +15,8 @@ class GameScene: SKScene {
     //(adding! could avoid the initialization)
     var level: Level!
     
+    var swipeHandler: ((Swap) -> ())? //The type of this variable is ((Swap) -> ())?. Because of the -> you can tell this is a closure or function. This closure or function takes a Swap object as its parameter and does not return anything. The question mark indicates that swipeHandler is allowed to be nil (it is an optional).
+    
     let TileWidth: CGFloat = 32.0
     let TileHeight: CGFloat = 36.0
     
@@ -76,9 +78,9 @@ class GameScene: SKScene {
     }
     
     //This method takes a CGPoint that is relative to the cookiesLayer and converts it into column and row numbers.
-    func convertPoint(point:CGPoint) -> (success: Bool, column:Int, row:Int){
-        if (point.x >= 0 && point.x < CGFloat(NumColumns)*TileWidth ) &&
-            (point.y >= 0 && point.y < CGFloat(NumRows)*TileHeight){
+    func convertPoint (point:CGPoint) -> (success: Bool, column:Int, row:Int){
+        if point.x >= 0 && point.x < CGFloat(NumColumns)*TileWidth  &&
+            point.y >= 0 && point.y < CGFloat(NumRows)*TileHeight {
             return (true,Int(point.x/TileWidth),Int(point.y/TileHeight))
         }else{
             return (false,0,0)  //invalid location
@@ -103,12 +105,14 @@ class GameScene: SKScene {
     //3,Next, the method verifies that the touch is on a cookie rather than on an empty square.
     //4.Finally, it records the column and row where the swipe started so you can compare them later to find the direction of the swipe.
         override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+            
             guard let touch = touches.first else {return }
             let location = touch.location(in: CandyLayer)
+            
             let (success,column,row) = convertPoint(point: location)
             
             if success {
-                if level.candyAt(column:column,row:row) != nil{
+                if let candy = level.candyAt(column: column, row: row) {
                     swipeFromRow = row
                     swipeFromColumn = column
                 }
@@ -140,7 +144,7 @@ class GameScene: SKScene {
                 vertiDelta = 1
             }
             
-            if horzDelta != 0 && vertiDelta != 0 {
+            if horzDelta != 0 || vertiDelta != 0 {
                 trySwap(horizental: horzDelta, vertical: vertiDelta)
                 
                  swipeFromColumn = nil
@@ -162,7 +166,12 @@ class GameScene: SKScene {
         
         if let toCandy = level.candyAt(column: toColumn, row: toRow),
             let fromCandy = level.candyAt(column: swipeFromColumn!, row: swipeFromRow!){
-            print("get a swap: from \(fromCandy) to \(toCandy)")
+            
+            if let handler = swipeHandler{
+                //create a swap object
+                let swap = Swap(candyA: fromCandy, candyB: toCandy)
+                handler(swap)
+            }
         }
         
     }
@@ -178,4 +187,29 @@ class GameScene: SKScene {
         touchesEnded(touches, with: event)
     }
     
+    //This is basic SKAction animation code: You move cookie A to the position of cookie B and vice versa.
+    //() -> () is simply shorthand for a closure that returns void and takes no parameters.
+    func animate(_ swap:Swap, completion: @escaping () -> ()){
+        
+        let spriteA = swap.candyA.sprite!
+        let spriteB = swap.candyB.sprite!
+        
+        spriteA.zPosition = 100
+        spriteB.zPosition = 90
+        
+        let duration: TimeInterval = 0.3
+        
+        let moveA = SKAction.move(to: spriteB.position, duration: duration)
+        moveA.timingMode = .easeOut
+        spriteA.run(moveA,completion: completion)
+        
+        let moveB = SKAction.move(to: spriteA.position, duration: duration)
+        moveB.timingMode = .easeOut  //easy out
+        spriteB.run(moveB)
+        
+    }
+    
+    
  }
+
+
