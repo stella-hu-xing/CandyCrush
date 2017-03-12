@@ -202,7 +202,7 @@ class GameScene: SKScene {
     
     //This is basic SKAction animation code: You move cookie A to the position of cookie B and vice versa.
     //() -> () is simply shorthand for a closure that returns void and takes no parameters.
-    func animate(_ swap:Swap, completion: @escaping () -> ()){
+    func animate(swap: Swap, completion: @escaping () -> ()) {
         
         let spriteA = swap.candyA.sprite!
         let spriteB = swap.candyB.sprite!
@@ -264,7 +264,89 @@ class GameScene: SKScene {
         selectedSprite.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.3),SKAction.removeFromParent()]))
     }
     
+
+
+    func animateMatchedCandies(for chains: Set<Chain>,completion:@escaping ()->()) {
+        for chain in chains{
+            for candy in chain.candies{
+                if let sprite = candy.sprite{
+                    if sprite.action(forKey: "removing") == nil{
+                        let scaleAction = SKAction.scale(to: 0.1, duration: 0.3)
+                        scaleAction.timingMode = .easeOut
+                        sprite.run(SKAction.sequence([scaleAction,SKAction.removeFromParent()]), withKey: "removing")
+                    }
+                }
+            }
+        }
+        run(SKAction.wait(forDuration: 0.3), completion: completion)
+    }
     
+    
+    func animateFallingCandies(columns: [[Candy]], completion:@escaping () -> ()) {
+        // 1
+        var longestDuration: TimeInterval = 0
+        for array in columns {
+            for (idx, candy) in array.enumerated() {
+                let newPosition = pointFor(column: candy.column, row: candy.row)
+                // 2
+                let delay = 0.05 + 0.15*TimeInterval(idx)
+                // 3
+                let sprite = candy.sprite!   // sprite always exists at this point
+                let duration = TimeInterval(((sprite.position.y - newPosition.y) / TileHeight) * 0.1)
+                // 4
+                longestDuration = max(longestDuration, duration + delay)
+                // 5
+                let moveAction = SKAction.move(to: newPosition, duration: duration)
+                moveAction.timingMode = .easeOut
+                sprite.run(
+                    SKAction.sequence([
+                        SKAction.wait(forDuration: delay),
+                        moveAction]))
+            }
+        }
+        
+        // 6
+        run(SKAction.wait(forDuration: longestDuration),completion: completion)
+    }
+    
+    
+    func animateNewCookies(_ columns: [[Candy]], completion: @escaping () -> ()) {
+        // 1
+        var longestDuration: TimeInterval = 0
+        
+        for array in columns {
+            // 2
+            let startRow = array[0].row + 1
+            
+            for (idx, candy) in array.enumerated() {
+                // 3
+                let sprite = SKSpriteNode(imageNamed: candy.candyType.spriteName)
+                sprite.size = CGSize(width: TileWidth, height: TileHeight)
+                sprite.position = pointFor(column: candy.column, row: startRow)
+                CandyLayer.addChild(sprite)
+                candy.sprite = sprite
+                // 4
+                let delay = 0.1 + 0.2 * TimeInterval(array.count - idx - 1)
+                // 5
+                let duration = TimeInterval(startRow - candy.row) * 0.1
+                longestDuration = max(longestDuration, duration + delay)
+                // 6
+                let newPosition = pointFor(column: candy.column, row: candy.row)
+                let moveAction = SKAction.move(to: newPosition, duration: duration)
+                moveAction.timingMode = .easeOut
+                sprite.alpha = 0
+                sprite.run(
+                    SKAction.sequence([
+                        SKAction.wait(forDuration: delay),
+                        SKAction.group([
+                            SKAction.fadeIn(withDuration: 0.05),
+                            moveAction])
+                        ]))
+            }
+        }
+        // 7
+        run(SKAction.wait(forDuration: longestDuration), completion: completion)
+    }
     
  }
 

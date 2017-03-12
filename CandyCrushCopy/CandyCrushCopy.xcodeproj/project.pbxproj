@@ -19,6 +19,7 @@
 		792382A01E6FE024001AEA77 /* Candy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7923829F1E6FE024001AEA77 /* Candy.swift */; };
 		792382A21E6FF0C1001AEA77 /* Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792382A11E6FF0C1001AEA77 /* Array2D.swift */; };
 		792382A41E6FF506001AEA77 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792382A31E6FF506001AEA77 /* Level.swift */; };
+		79B26C2C1E74B784007CB713 /* Chain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B26C2B1E74B784007CB713 /* Chain.swift */; };
 		79CAAB081E7260F900FC8C35 /* Swap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CAAB071E7260F900FC8C35 /* Swap.swift */; };
 		79FC4B5E1E71032A000879B8 /* Level_0.json in Resources */ = {isa = PBXBuildFile; fileRef = 79FC4B591E71032A000879B8 /* Level_0.json */; };
 		79FC4B5F1E71032A000879B8 /* Level_1.json in Resources */ = {isa = PBXBuildFile; fileRef = 79FC4B5A1E71032A000879B8 /* Level_1.json */; };
@@ -65,6 +66,7 @@
 		7923829F1E6FE024001AEA77 /* Candy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Candy.swift; sourceTree = "<group>"; };
 		792382A11E6FF0C1001AEA77 /* Array2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array2D.swift; sourceTree = "<group>"; };
 		792382A31E6FF506001AEA77 /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
+		79B26C2B1E74B784007CB713 /* Chain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chain.swift; sourceTree = "<group>"; };
 		79CAAB071E7260F900FC8C35 /* Swap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Swap.swift; sourceTree = "<group>"; };
 		79FC4B591E71032A000879B8 /* Level_0.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Level_0.json; sourceTree = "<group>"; };
 		79FC4B5A1E71032A000879B8 /* Level_1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Level_1.json; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				792382A31E6FF506001AEA77 /* Level.swift */,
 				79FC4B631E710375000879B8 /* Tile.swift */,
 				79FC4B651E710489000879B8 /* Extension.swift */,
+				79B26C2B1E74B784007CB713 /* Chain.swift */,
 			);
 			path = CandyCrushCopy;
 			sourceTree = "<group>";
@@ -318,6 +321,7 @@
 				792382A01E6FE024001AEA77 /* Candy.swift in Sources */,
 				79FC4B641E710375000879B8 /* Tile.swift in Sources */,
 				792382721E6FCEED001AEA77 /* GameViewController.swift in Sources */,
+				79B26C2C1E74B784007CB713 /* Chain.swift in Sources */,
 				7923826A1E6FCEED001AEA77 /* AppDelegate.swift in Sources */,
 				792382A21E6FF0C1001AEA77 /* Array2D.swift in Sources */,
 				79FC4B661E710489000879B8 /* Extension.swift in Sources */,
@@ -416,7 +420,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -459,7 +463,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

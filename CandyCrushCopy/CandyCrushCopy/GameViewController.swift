@@ -64,24 +64,42 @@ class GameViewController: UIViewController {
         beginGame()
     }
     
-    func handleSwipe(_ swap:Swap){
+    func handleSwipe(_ swap: Swap) {
+        // While cookies are being matched and new cookies fall down to fill up
+        // the holes, we don't want the player to tap on anything.
+        view.isUserInteractionEnabled = false
         
-      view.isUserInteractionEnabled = false
-    
-        if level.isPossibleSwap(swap){
-            level.performSwap(swap: swap)
-            scene.animate(swap){
-                self.view.isUserInteractionEnabled = true
-            }
-        }else {
-            scene.animateInvalidSwap(swap){
+        if level.isPossibleSwap(swap) {
+            level.performSwap(swap:swap)
+            scene.animate(swap: swap, completion: handleMatches)
+        } else {
+            scene.animateInvalidSwap(swap) {
                 self.view.isUserInteractionEnabled = true
             }
         }
     }
     
+    func handleMatches() {
+        let chains = level.removeMatches()
+        if chains.count == 0 {
+            beginNextTurn()
+            return
+        }
+        scene.animateMatchedCandies(for: chains) {
+            let columns = self.level.fillHoles()
+            self.scene.animateFallingCandies(columns: columns) {
+                let columns = self.level.topUpCookies()
+                self.scene.animateNewCookies(columns) {
+                    self.view.isUserInteractionEnabled = true
+                }
+            }
+        }
+    }
     
-    
+    func beginNextTurn() {
+        level.detectPossibleSwaps()
+        view.isUserInteractionEnabled = true
+    }
     
     
 }

@@ -197,4 +197,142 @@ class Level{
         return possibleSwaps.contains(swap)
     }
     
+
+    //private method
+    private func detectHorizontalMatches() -> Set<Chain>{
+        var set = Set<Chain>()
+        
+        for r in 0..<NumRows{
+            var c = 0
+            while c < NumColumns - 2 {// do not need to calculate the last 2 columns
+                if let candy = candies[c,r]{
+                    let matchType = candy.candyType
+                    
+                    if candies[c+1, r]?.candyType == matchType && candies[c+2,r]?.candyType == matchType{
+                        let chain = Chain(chainType: .horizontal)
+                        repeat{
+                            chain.add(candy: candies[c,r]!)
+                            c += 1
+                        }while c < NumColumns && candies[c,r]?.candyType == matchType
+                        
+                        set.insert(chain)
+                        continue
+                    }
+                }
+                c += 1
+            }
+        }
+        return set
+    }
+    
+    //private method
+    private func detectVerticalMatches() -> Set<Chain>{
+        var set = Set<Chain>()
+        
+        for c in 0..<NumColumns{
+            var r = 0
+            while r < NumRows - 2{
+                if let candy = candies[c,r]{
+                    let matchType = candy.candyType
+                    if candies[c,r+1]?.candyType == matchType && candies[c,r+2]?.candyType == matchType{
+                     let chain = Chain(chainType: .vertical)
+                        repeat{
+                            chain.add(candy: candies[c,r]!)
+                            r += 1
+                        }while r < NumRows && candies[c,r]?.candyType == matchType
+                        
+                        set.insert(chain)
+                        continue
+                    }
+                }
+               r += 1
+            }
+        }
+        return set
+    }
+    
+    // after checking horizontal and vertical matches both
+    //public method
+    func removeMatches() -> Set<Chain>{
+        let horChains = detectHorizontalMatches()
+        let verChains = detectVerticalMatches()
+        
+        removeCandies(chains: horChains)
+        removeCandies(chains: verChains)
+        
+        return horChains.union(verChains)
+    }
+    
+    private func removeCandies(chains: Set<Chain>){
+        for chain in chains{
+            for candy in chain.candies{
+                candies[candy.column,candy.row] = nil
+            }
+        }
+    }
+    
+    func fillHoles() -> [[Candy]] {
+        var columns = [[Candy]]()
+        // 1
+        for column in 0..<NumColumns {
+            var array = [Candy]()
+            for row in 0..<NumRows {
+                // 2
+                if tiles[column, row] != nil && candies[column, row] == nil {
+                    // 3
+                    for lookup in (row + 1)..<NumRows {
+                        if let candy = candies[column, lookup] {
+                            // 4
+                            candies[column, lookup] = nil
+                            candies[column, row] = candy
+                            candy.row = row
+                            // 5
+                            array.append(candy)
+                            // 6
+                            break
+                        }
+                    }
+                }
+            }
+            // 7
+            if !array.isEmpty {
+                columns.append(array)
+            }
+        }
+        return columns
+    }
+    
+    func topUpCookies() -> [[Candy]] {
+        var columns = [[Candy]]()
+        var candyType: CandyType = .unknown
+        
+        for column in 0..<NumColumns {
+            var array = [Candy]()
+            
+            // 1
+            var row = NumRows - 1
+            while row >= 0 && candies[column, row] == nil {
+                // 2
+                if tiles[column, row] != nil {
+                    // 3
+                    var newCandyType: CandyType
+                    repeat {
+                        newCandyType = CandyType.random()
+                    } while newCandyType == candyType
+                    candyType = newCandyType
+                    // 4
+                    let candy = Candy(column: column, row: row, candyType: candyType)
+                    candies[column, row] = candy
+                    array.append(candy)
+                }
+                
+                row -= 1
+            }
+            // 5
+            if !array.isEmpty {
+                columns.append(array)
+            }
+        }
+        return columns
+    }
 }
