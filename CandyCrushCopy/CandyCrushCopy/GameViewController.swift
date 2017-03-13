@@ -13,7 +13,19 @@ class GameViewController: UIViewController {
     var scene: GameScene!
     var level:Level!
     
+    //The movesLeft and score variables keep track of how well the player is doing (model data), while the outlets show this on the screen (views).
+    var movesLeft = 0
+    var score = 0
+    
+    @IBOutlet weak var targetLabel: UILabel!
+    @IBOutlet weak var movesLabel: UILabel!
+    @IBOutlet weak var scoreLabel: UILabel!
+    
     func beginGame(){
+        movesLeft = level.maximumMoves
+        score = 0
+        updateLabels()
+        
         shuffle()
     }
     
@@ -86,6 +98,12 @@ class GameViewController: UIViewController {
             return
         }
         scene.animateMatchedCandies(for: chains) {
+            
+            for chain in chains{
+                self.score += chain.score
+            }
+            self.updateLabels()
+            
             let columns = self.level.fillHoles()
             self.scene.animateFallingCandies(columns: columns) {
                 let columns = self.level.topUpCookies()
@@ -99,6 +117,12 @@ class GameViewController: UIViewController {
     func beginNextTurn() {
         level.detectPossibleSwaps()
         view.isUserInteractionEnabled = true
+    }
+    
+    func updateLabels(){
+        targetLabel.text = String(format: "%ld", level.targetScore)
+        movesLabel.text = String(format: "%ld", movesLeft)
+        scoreLabel.text = String(format: "%ld", score)
     }
     
     

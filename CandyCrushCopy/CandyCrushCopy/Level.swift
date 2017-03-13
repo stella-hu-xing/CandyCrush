@@ -21,6 +21,10 @@ class Level{
     //Set  instead of an Array because the order of the elements in this collection isn’t important. This Set will contain Swap objects. If the player tries to swap two cookies that are not in the set, then the game won’t accept the swap as a valid move.
     private var possibleSwaps = Set<Swap>()
     
+    //to calculate score
+    var targetScore = 0
+    var maximumMoves = 0
+    
     func candyAt(column:Int,row:Int)->Candy?{
         
         //The idea behind assert is you give it a condition, and if the condition fails the app will crash with a log message.
@@ -175,6 +179,9 @@ class Level{
                 }
             }
         }
+        
+        targetScore = dictionary["targetScore"] as! Int
+        maximumMoves = dictionary["moves"] as! Int
     }
     
     func performSwap(swap:Swap){
@@ -260,6 +267,9 @@ class Level{
         removeCandies(chains: horChains)
         removeCandies(chains: verChains)
         
+        calculateScores(for: horChains)
+        calculateScores(for: verChains)
+        
         return horChains.union(verChains)
     }
     
@@ -334,5 +344,14 @@ class Level{
             }
         }
         return columns
+    }
+    
+    //The scoring rules are simple:
+    //A 3-cookie chain is worth 60 points.
+    //Each additional cookie in the chain increases the chain’s value by 60 points.
+    private func calculateScores(for chains: Set<Chain>){
+        for chain in chains{
+            chain.score = 60*(chain.length-2)
+        }
     }
 }
