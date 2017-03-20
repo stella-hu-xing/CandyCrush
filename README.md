@@ -2,7 +2,7 @@
 
 ##demonstration
 
-![screen-shoot](CandyCrushCopy/Screen Shot1.jpg)
+![screen-shoot](CandyCrushCopy/ScreenShot1.jpg)
 
 ##About Author
  - All copyright belongs to Morten Faarkrog from [Ray Wenderlich tutorial](https://www.raywenderlich.com/)
