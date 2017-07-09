@@ -1,6 +1,6 @@
 # CandyCrushCopy
 
-##demonstration
+## demonstration
 
 ![screen-shoot](CandyCrushCopy/ScreenShot1.jpg)
 
